@@ -18,6 +18,8 @@ val sizeFactor : Float = 2.8f
 val circleColor : Int = Color.parseColor("#f44336")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val strokeFactor : Int = 90
+val rSizeFactor : Float = 2.0f
+val DELAY : Long = 20
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -56,14 +58,14 @@ fun Canvas.drawStrokedCircle(deg : Float, r : Float, paint : Paint) {
 fun Canvas.drawCADNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val gap : Float = w / (nodes + 1)
+    val gap : Float = h / (nodes + 1)
     val size : Float = gap / sizeFactor
-    val rSize : Float = size / 2
+    val rSize : Float = size / rSizeFactor
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
     save()
-    translate(gap * (i + 1), h / 2)
+    translate(w/2, gap * (i + 1))
     drawStrokedCircle(360f * sc2, size, paint)
     var deg : Float = 0f
     for (j in 0..(arrows - 1)) {
@@ -124,7 +126,7 @@ class CircularArrowDirView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(DELAY)
                     view.invalidate()
                 } catch(ex : Exception) {
 
