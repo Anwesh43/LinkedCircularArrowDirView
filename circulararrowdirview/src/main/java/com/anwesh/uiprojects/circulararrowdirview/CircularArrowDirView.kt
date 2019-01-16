@@ -64,14 +64,17 @@ fun Canvas.drawCADNode(i : Int, scale : Float, paint : Paint) {
     val sc2 : Float = scale.divideScale(1, 2)
     save()
     translate(gap * (i + 1), h / 2)
-    drawStrokedCircle(360f * sc2, size/2, paint)
+    drawStrokedCircle(360f * sc2, size, paint)
     var deg : Float = 0f
     for (j in 0..(arrows - 1)) {
         val sc : Float = sc1.divideScale(j, arrows)
         val scj1 : Float = sc.divideScale(0, 2)
         val scj2 : Float = sc.divideScale(1, 2)
         deg += 90f * scj1
-        drawCircularArrow((size - rSize) * scj2, 0f, rSize, deg, paint)
+        save()
+        rotate(90f * j)
+        drawCircularArrow((size - rSize/2) * scj2, 0f, rSize, deg - 90f * j, paint)
+        restore()
     }
     restore()
 }
@@ -237,7 +240,7 @@ class CircularArrowDirView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : CircularArrowDirView {
             val view : CircularArrowDirView = CircularArrowDirView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
  }
