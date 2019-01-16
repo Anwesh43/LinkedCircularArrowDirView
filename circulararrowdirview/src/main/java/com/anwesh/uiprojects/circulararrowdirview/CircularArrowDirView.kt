@@ -232,4 +232,12 @@ class CircularArrowDirView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+        fun create(activity : Activity) : CircularArrowDirView {
+            val view : CircularArrowDirView = CircularArrowDirView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
  }
