@@ -186,7 +186,7 @@ class CircularArrowDirView(ctx : Context) : View(ctx) {
         }
     }
 
-    data class CiruclarArrowDir(var i : Int) {
+    data class CircularArrowDir(var i : Int) {
         private val root : CADNode = CADNode(0)
         private var curr : CADNode = root
         private var dir : Int = 1
@@ -206,6 +206,28 @@ class CircularArrowDirView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : CircularArrowDirView) {
+
+        private val animator : Animator = Animator(view)
+        private val cad : CircularArrowDir = CircularArrowDir(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            cad.draw(canvas, paint)
+            animator.animate {
+                cad.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            cad.startUpdating {
+                animator.start()
+            }
         }
     }
  }
